@@ -3,5 +3,5 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
 	
-	<include file="manager_struts/member.xml" />
+	<include file="struts/*.xml" />
 </struts>

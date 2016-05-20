@@ -24,7 +24,7 @@
 		<global-results>
 			<!-- 当anction抛出异常将被转向web的错误处理页面，拦截器是webExceptionInterceptor -->
 			<result name="glober_error">
-				/glober_error.jsp
+				/common/glober_error.jsp
 			</result>
 		</global-results>
 	</package>
