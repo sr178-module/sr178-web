@@ -1,0 +1,31 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    
+	<include file="struts-default.xml" />
+	<include file="struts-plugin.xml" />
+	<include file="manager_struts/all_manager.xml" />
+    <constant name="struts.custom.i18n.resources" value="message"></constant>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+	<package name="myInterceptor" extends="json-default">
+		<interceptors>
+			<!-- struts异常拦截器 -->
+			<interceptor name="webExceptionInterceptor"
+				class="com.sr178.module.web.interceptor.WebExceptionInterceptor" />
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="webExceptionInterceptor" />
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack" />
+		
+		<global-results>
+			<!-- 当anction抛出异常将被转向web的错误处理页面，拦截器是webExceptionInterceptor -->
+			<result name="glober_error">
+				/glober_error.jsp
+			</result>
+		</global-results>
+	</package>
+</struts>
