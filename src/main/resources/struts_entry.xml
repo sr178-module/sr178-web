@@ -9,6 +9,7 @@
     <constant name="struts.custom.i18n.resources" value="message"></constant>
     <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
     <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+    <constant name="struts.action.extension" value="sm"/>
 	<package name="myInterceptor" extends="json-default">
 		<interceptors>
 			<!-- struts异常拦截器 -->
