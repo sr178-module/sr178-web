@@ -32,8 +32,18 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 		// sql注入检查
 		String checkResult = checkSql(invocation);
 		if (checkResult != null) {
+			String msg = getMsgTag() + "[userName]=[" + aldAction.getUserName() + "]";
 			aldAction.setCode(WebError.GLOAB_ERROR_SQL);
 			aldAction.setDesc("非法词提交："+checkResult);
+			LogSystem.warn("注入异常==》"+msg);
+			return WebError.GLOAB_ERROR_RESULT;
+		}
+		
+		if(!aldAction.isCanVisite()){
+			String msg = getMsgTag() + "[userName]=[" + aldAction.getUserName() + "]";
+			aldAction.setCode(WebError.GLOAB_ERROR_VISIT_LIMIT);
+			aldAction.setDesc("并发访问限制：");
+			LogSystem.warn("并发访问异常==》"+msg+",session="+aldAction.getUserSession());
 			return WebError.GLOAB_ERROR_RESULT;
 		}
 		
@@ -79,7 +89,7 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 	public String transactSQLInjection(String[] str)
 	{
 		for(int i=0;i<str.length;i++){
-			for(int j=0;i<SQL_LIMIT.length;j++){
+			for(int j=0;j<SQL_LIMIT.length;j++){
 				if(str[i].indexOf(SQL_LIMIT[j])!=-1||(str[i].indexOf(SQL_LIMIT[j].toUpperCase())!=-1)){
 					return str[i];
 				}

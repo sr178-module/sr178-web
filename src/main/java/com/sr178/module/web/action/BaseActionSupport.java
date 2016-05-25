@@ -17,11 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.sr178.game.framework.config.ConfigLoader;
 import com.sr178.game.framework.log.LogSystem;
 import com.sr178.module.utils.ExportExcel;
 import com.sr178.module.utils.FileCreatUtil;
+import com.sr178.module.web.session.Session;
 /**
- * @author hzy
+ * @author 
  * 2012-7-20
  */
 public class BaseActionSupport extends ActionSupport {
@@ -37,6 +39,8 @@ public class BaseActionSupport extends ActionSupport {
 	private String desc;
 	//出错返回到的页面结果
 	private String errorResult;
+	//用户session
+	private Session userSession;
 	
 	public int getCode() {
 		return code;
@@ -114,6 +118,39 @@ public class BaseActionSupport extends ActionSupport {
             ex.printStackTrace();  
         }  
     }
+	/**
+	 * 连续多次 访问间隔小于500ms  则等待1分钟后才能访问
+	 * @param userSession
+	 * @return
+	 */
+	public boolean isCanVisite(){
+		if(userSession==null){
+			return true;
+		}
+		long minVisitInterVal = ConfigLoader.getLongValue("min_visit_interval", 0l);
+		if(minVisitInterVal>0){
+			long now = System.currentTimeMillis();
+			int maxBadVisitTimes = ConfigLoader.getIntValue("max_bad_visit_times", 5);
+			if(userSession.getBadVisitTimes()>maxBadVisitTimes){
+				//如果出现多余5次的超标  则要等待1分钟才能进行访问  超过一分钟后    重置次数与上次访问时间
+				int stopVisitTime = ConfigLoader.getIntValue("stop_visit_time", 60);
+				if(now-userSession.getPreVisitTime()>stopVisitTime*1000){
+					userSession.setBadVisitTimes(0);
+					userSession.setPreVisitTime(now);
+					return true;
+				}
+				return false;
+			}
+			long visitInterVal = now-userSession.getPreVisitTime();
+			if(visitInterVal<minVisitInterVal){
+				userSession.increaseBadVisitTimes();
+			}else{
+				userSession.setBadVisitTimes(0);
+			}
+			userSession.setPreVisitTime(now);
+		}
+		return true;
+	}
 
 	public String getTokenId() {
 		return tokenId;
@@ -129,5 +166,13 @@ public class BaseActionSupport extends ActionSupport {
 
 	public void setErrorResult(String errorResult) {
 		this.errorResult = errorResult;
+	}
+
+	public Session getUserSession() {
+		return userSession;
+	}
+
+	public void setUserSession(Session userSession) {
+		this.userSession = userSession;
 	}
 }
