@@ -63,5 +63,8 @@ public class Session {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	
 }
