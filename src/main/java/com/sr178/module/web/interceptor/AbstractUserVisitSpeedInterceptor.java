@@ -29,6 +29,7 @@ public abstract class AbstractUserVisitSpeedInterceptor extends BaseInterceptor 
 			aldAction.setCode(WebError.GLOAB_ERROR_VISIT_LIMIT);
 			aldAction.setDesc("并发访问限制：");
 			LogSystem.warn("并发访问异常==》"+msg+",session="+aldAction.getUserSession());
+			afterTrigger(aldAction.getUserSession());
 			return WebError.GLOAB_ERROR_RESULT;
 		}
 		return invocation.invoke();
@@ -71,4 +72,6 @@ public abstract class AbstractUserVisitSpeedInterceptor extends BaseInterceptor 
 	}
 	
 	public abstract void saveSession(Session userSession);
+	
+	public abstract void afterTrigger(Session userSession);
 }
