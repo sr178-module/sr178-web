@@ -23,7 +23,7 @@ public class JsonExceptionInterceptor extends BaseInterceptor {
 	public String intercept(ActionInvocation invocation) throws Exception {
 		
 		JsonBaseActionSupport jsonAction = (JsonBaseActionSupport) invocation.getAction();
-		String userName = jsonAction.getLoginUser();
+		String userName = jsonAction.getUserName();
 		try {
 			return invocation.invoke();
 		} catch (Exception e) {

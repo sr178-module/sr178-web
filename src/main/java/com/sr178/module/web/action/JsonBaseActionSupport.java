@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.sr178.common.jdbc.bean.IPage;
 
-public class JsonBaseActionSupport extends ActionSupport{
+public class JsonBaseActionSupport extends BaseActionSupport{
 	/**
 	 * 
 	 */
@@ -15,9 +14,9 @@ public class JsonBaseActionSupport extends ActionSupport{
 
 	public static final String JSON = "json";
 	
-	private String tokenId;
+	private static final int DEFAULT_SUCCESS_CODE = 0;
 	
-	private String loginUser;
+	private static final int DEFAULT_ERROR_CODE = -1;
 	
 	private Map<String,Object> dataMap = new HashMap<String,Object>();
 
@@ -35,7 +34,7 @@ public class JsonBaseActionSupport extends ActionSupport{
 	 * @param o
 	 */
 	public <T> String renderObjectResult(T o){
-		dataMap.put("flag", 1);
+		dataMap.put("flag", DEFAULT_SUCCESS_CODE);
 		dataMap.put("msg", "success");
 		dataMap.put("rc",o);
 		return JSON;
@@ -46,7 +45,7 @@ public class JsonBaseActionSupport extends ActionSupport{
 	 * @param o
 	 */
 	public <T> String renderPageResult(IPage<T> page){
-		dataMap.put("flag", 1);
+		dataMap.put("flag", DEFAULT_SUCCESS_CODE);
 		dataMap.put("msg", "success");
 		dataMap.put("totalSize",page.getTotalSize());
 		dataMap.put("rc",page.getData());
@@ -58,7 +57,7 @@ public class JsonBaseActionSupport extends ActionSupport{
 	 * @param o
 	 */
 	public <T> String renderKeyValueResult(String key,Object value){
-		dataMap.put("flag", 1);
+		dataMap.put("flag", DEFAULT_SUCCESS_CODE);
 		dataMap.put("msg", "success");
 		Map<String,Object>  o = new HashMap<String,Object>();
 		o.put(key, value);
@@ -70,7 +69,7 @@ public class JsonBaseActionSupport extends ActionSupport{
 	 * @param o
 	 */
 	public <T> String renderListResult(List<T> o){
-		dataMap.put("flag", 1);
+		dataMap.put("flag", DEFAULT_SUCCESS_CODE);
 		dataMap.put("msg", "success");
 		dataMap.put("rc",o);
 		return JSON;
@@ -80,7 +79,7 @@ public class JsonBaseActionSupport extends ActionSupport{
 	 * @param msg
 	 */
 	public String renderErrorResult(String msg){
-		dataMap.put("flag", 0);
+		dataMap.put("flag", DEFAULT_ERROR_CODE);
 		dataMap.put("msg",msg);
 		return JSON;
 	}
@@ -97,24 +96,8 @@ public class JsonBaseActionSupport extends ActionSupport{
      * 没有返回参数的成功消息
      */
 	public String renderSuccessResult(){
-		dataMap.put("flag", 1);
+		dataMap.put("flag", DEFAULT_SUCCESS_CODE);
 		dataMap.put("msg","sucess");
 		return JSON;
-	}
-
-	public String getTokenId() {
-		return tokenId;
-	}
-
-	public void setTokenId(String tokenId) {
-		this.tokenId = tokenId;
-	}
-
-	public String getLoginUser() {
-		return loginUser;
-	}
-
-	public void setLoginUser(String loginUser) {
-		this.loginUser = loginUser;
 	}
 }
