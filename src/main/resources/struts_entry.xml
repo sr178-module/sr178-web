@@ -26,6 +26,9 @@
 			<result name="glober_error">
 				/common/glober_error.jsp
 			</result>
+			 <result name="json" type="json">
+               <param name="root">dataMap</param>  
+			</result>
 		</global-results>
 	</package>
 </struts>

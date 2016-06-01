@@ -5,6 +5,7 @@ import com.opensymphony.xwork2.ActionInvocation;
 import com.sr178.game.framework.exception.ServiceException;
 import com.sr178.game.framework.log.LogSystem;
 import com.sr178.module.web.action.BaseActionSupport;
+import com.sr178.module.web.action.JsonBaseActionSupport;
 import com.sr178.module.web.constant.WebError;
 
 /**
@@ -39,6 +40,14 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 				if (aldAction.getErrorResult() == null) {
 					return WebError.GLOAB_ERROR_RESULT;
 				} else {
+					if(aldAction.getErrorResult().equals("json")){
+						if(invocation.getAction() instanceof JsonBaseActionSupport){
+							JsonBaseActionSupport jsonAction = (JsonBaseActionSupport)invocation.getAction();
+							return jsonAction.renderErrorResult(exception.getCode(), exception.getMessage());
+						}else{
+							throw new RuntimeException("返回json的action必须继承自JsonBaseActionSupport!");
+						}
+					}
 					return aldAction.getErrorResult();
 				}
 			} else {
