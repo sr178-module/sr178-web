@@ -7,8 +7,8 @@
 	<include file="struts-plugin.xml" />
 	<include file="manager_struts/all_manager.xml" />
     <constant name="struts.custom.i18n.resources" value="message"></constant>
-    <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
-    <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="false"></constant>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"></constant>
 	<package name="myInterceptor" extends="json-default">
 		<interceptors>
 			<!-- struts异常拦截器 -->
