@@ -21,12 +21,8 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	
-
 	public String intercept(ActionInvocation invocation) throws Exception {
-		
 		BaseActionSupport aldAction = (BaseActionSupport) invocation.getAction();
-
 		try {
 			return invocation.invoke();
 		} catch (Exception e) {
@@ -51,10 +47,22 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 					return aldAction.getErrorResult();
 				}
 			} else {
-				aldAction.setCode(WebError.GLOAB_ERROR_CODE);
-				aldAction.setDesc("不可预知的错误！");
-				LogSystem.error(e, msg + ",发生了不可预知的异常");
-				return WebError.GLOAB_ERROR_RESULT;
+				if(aldAction.getErrorResult() == null){
+					aldAction.setCode(WebError.GLOAB_ERROR_CODE);
+					aldAction.setDesc("不可预知的错误！");
+					LogSystem.error(e, msg + ",发生了不可预知的异常");
+					return WebError.GLOAB_ERROR_RESULT;
+				}else{
+					if(aldAction.getErrorResult().equals("json")){
+						if(invocation.getAction() instanceof JsonBaseActionSupport){
+							JsonBaseActionSupport jsonAction = (JsonBaseActionSupport)invocation.getAction();
+							return jsonAction.renderErrorResult(8888, "不可预知的错误！");
+						}else{
+							throw new RuntimeException("返回json的action必须继承自JsonBaseActionSupport!");
+						}
+					}
+					return aldAction.getErrorResult();
+				}
 			}
 		}
 	}

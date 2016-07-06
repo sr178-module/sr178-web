@@ -20,6 +20,9 @@ public class JsonBaseActionSupport extends BaseActionSupport{
 	
 	private Map<String,Object> dataMap = new HashMap<String,Object>();
 
+	public JsonBaseActionSupport(){
+		this.setErrorResult(JSON);
+	}
 
 	public Map<String, Object> getDataMap() {
 		return dataMap;
