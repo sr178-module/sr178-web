@@ -47,10 +47,10 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 					return aldAction.getErrorResult();
 				}
 			} else {
+				LogSystem.error(e, msg+ "");
 				if(aldAction.getErrorResult() == null){
 					aldAction.setCode(WebError.GLOAB_ERROR_CODE);
 					aldAction.setDesc("不可预知的错误！");
-					LogSystem.error(e, msg + ",发生了不可预知的异常");
 					return WebError.GLOAB_ERROR_RESULT;
 				}else{
 					if(aldAction.getErrorResult().equals("json")){
