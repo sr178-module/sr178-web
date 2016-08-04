@@ -51,6 +51,9 @@ public class JsonBaseActionSupport extends BaseActionSupport{
 		dataMap.put("flag", DEFAULT_SUCCESS_CODE);
 		dataMap.put("msg", "success");
 		dataMap.put("totalSize",page.getTotalSize());
+		dataMap.put("totalPage", page.getTotalPage());
+		dataMap.put("currentPage", page.getCurrentPage());
+		dataMap.put("pageSize", page.getPageSize());
 		dataMap.put("rc",page.getData());
 		return JSON;
 	}
