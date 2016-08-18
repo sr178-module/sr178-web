@@ -1,6 +1,10 @@
 package com.sr178.module.web.interceptor;
 
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import com.opensymphony.xwork2.ActionInvocation;
 import com.sr178.game.framework.exception.ServiceException;
 import com.sr178.game.framework.log.LogSystem;
@@ -26,7 +30,17 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 		try {
 			return invocation.invoke();
 		} catch (Exception e) {
-			String msg = getMsgTag() + "[userName]=[" + aldAction.getUserName() + "]";
+			StringBuffer values = new StringBuffer();
+			Map<String, Object> map = invocation.getInvocationContext().getParameters();
+			Set<String> keys = map.keySet();
+			Iterator<String> iters = keys.iterator();
+			while (iters.hasNext()) {
+				String key = iters.next();
+				Object value = map.get(key);
+				String result = getString((String[]) value);
+				values.append("key=("+key+"),value=("+result+");");
+			}
+			String msg = getMsgTag() + "[userName]=[" + aldAction.getUserName() + "],param=["+values.toString()+"]";
 			if (e instanceof ServiceException) {
 				ServiceException exception = (ServiceException) e;
 				aldAction.setCode(exception.getCode());
@@ -65,6 +79,15 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 				}
 			}
 		}
+	}
+	
+	public String getString(String[] str)
+	{
+		String result = "";
+		for(int i=0;i<str.length;i++){
+			result = result + str[i];
+		}
+	    return result;
 	}
 	
 }
