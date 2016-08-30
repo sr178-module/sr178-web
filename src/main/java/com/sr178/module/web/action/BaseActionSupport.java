@@ -41,6 +41,10 @@ public class BaseActionSupport extends ActionSupport {
 	//用户session
 	private Session userSession;
 	
+	public BaseActionSupport(){
+		this.setErrorResult(SUCCESS);
+	}
+	
 	public int getCode() {
 		return code;
 	}
