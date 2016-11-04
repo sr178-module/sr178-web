@@ -32,6 +32,8 @@ public class BaseActionSupport extends ActionSupport {
 	private String tokenId;
 	
 	private String userName;
+	
+	private long userId;
 	/** 错误码 */
 	private int code;
 	/** 错误描述 */
@@ -144,5 +146,13 @@ public class BaseActionSupport extends ActionSupport {
 
 	public void setUserSession(Session userSession) {
 		this.userSession = userSession;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 }
