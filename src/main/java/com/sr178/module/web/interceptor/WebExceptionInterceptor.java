@@ -37,8 +37,10 @@ public class WebExceptionInterceptor extends BaseInterceptor {
 			while (iters.hasNext()) {
 				String key = iters.next();
 				Object value = map.get(key);
-				String result = getString((String[]) value);
-				values.append("key=("+key+"),value=("+result+");");
+				if(value instanceof String[]){
+					String result = getString((String[]) value);
+					values.append("key=("+key+"),value=("+result+");");
+				}
 			}
 			String msg = getMsgTag() + "[userName]=[" + aldAction.getUserName() + "],param=["+values.toString()+"]";
 			if (e instanceof ServiceException) {
