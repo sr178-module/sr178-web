@@ -19,7 +19,7 @@ public class IllegalCharacterInterceptor extends BaseInterceptor {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final String[] SQL_LIMIT = new String[]{"'","select","update","case","when","drop","alert","and ","or ","exec","execute","insert","sleep"};
+	private static final String[] SQL_LIMIT = new String[]{"'","select","update","case","when","drop","alert","and ","or ","exec","execute","insert","sleep","<",">"};
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
 		BaseActionSupport aldAction = (BaseActionSupport) invocation.getAction();
